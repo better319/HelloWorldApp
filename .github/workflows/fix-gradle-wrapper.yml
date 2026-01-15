@@ -1,0 +1,34 @@
+name: Fix Gradle Wrapper
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-wrapper:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Install Gradle
+      run: |
+        wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
+        unzip gradle-8.5-bin.zip
+        export PATH=$PATH:$(pwd)/gradle-8.5/bin
+
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.5
+
+    - name: Commit Gradle Wrapper
+      run: |
+        git config --global user.name 'GitHub Actions'
+        git config --global user.email 'actions@github.com'
+        git add gradle/wrapper/
+        git diff --staged --quiet || git commit -m "Add missing Gradle Wrapper files"
+        git push
