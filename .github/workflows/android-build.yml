@@ -23,8 +23,8 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: 34
-        build-tools-version: '34.0.0'
+        api-level: 33
+        build-tools-version: '33.0.0'
         cmake-version: '3.22.1'
 
     - name: Accept Android SDK licenses
